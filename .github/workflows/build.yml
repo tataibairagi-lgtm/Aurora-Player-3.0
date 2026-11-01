@@ -17,8 +17,13 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.7
-      - run: gradle assembleDebug --no-daemon
+      - name: Build release (fast) and debug (fallback)
+        run: gradle assembleRelease assembleDebug --no-daemon
         working-directory: Aurora
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Aurora-release-apk
+          path: Aurora/app/build/outputs/apk/release/*.apk
       - uses: actions/upload-artifact@v4
         with:
           name: Aurora-debug-apk
